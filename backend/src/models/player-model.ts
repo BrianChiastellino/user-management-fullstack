@@ -1,17 +1,17 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, BaseEntity, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import { User } from "./user-model";
 
 //todo: Agregar calificacion
 
 @Entity('player') 
-export class Player {
+export class Player extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ type: 'enum', enum: ['izquierdo', 'derecho', 'ambidiestro'] })
   foot: string;
 
-  @Column({ type: 'varchar', length: 50 })
+  @Column({ type: 'varchar' })
   nationality: string;
 
   @Column({ type: 'int' })
@@ -23,7 +23,7 @@ export class Player {
   @Column({ type: 'double' })
   weight: number;
 
-  @Column({ type: 'enum', length: 50, enum: ['defensor', 'mediocampista', 'delantero', 'arquero'] })
+  @Column({ type: 'enum', enum: ['defensor', 'mediocampista', 'delantero', 'arquero'] })
   position: string;
 
   @Column({ type: 'int', default: 0 })
@@ -34,6 +34,12 @@ export class Player {
 
   @Column({ default: true })
   active: boolean;
+
+  @CreateDateColumn()
+  createdAt : Date;
+
+  @UpdateDateColumn()
+  updateAt : Date;
 
   @OneToOne(() => User, (user) => user.player)
   user: User; // Relación OneToOne con User

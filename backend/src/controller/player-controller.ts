@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { Player } from "../models/player-model";
 
 
 
@@ -9,11 +10,16 @@ class PlayerController {
     async getAll ( req : Request, res : Response ) {
         try {
 
-            // const data = await 
+            const data = await Player.find();
+
+            if ( !data || data.length === 0) 
+                throw new Error(`No existen jugadores en el sistema`);
+
+            res.status(200).json( data );
 
         } catch ( error ) {
             if ( error instanceof Error ){
-                console.error(`getAllPlayers: ${ error.message }`);
+                res.status(400).json({ msg : `${ error.message }`});
             };
         }
     };
@@ -23,7 +29,7 @@ class PlayerController {
 
         } catch ( error ) {
             if ( error instanceof Error ){
-                console.error(`getPlayerById: ${ error.message }`);
+                res.status(400).json({ msg : `${ error.message }`});
             };
         }
     };
@@ -31,9 +37,16 @@ class PlayerController {
     async create ( req : Request, res : Response ){
         try {
 
+            const data = await Player.save( req.body );
+
+            if ( !data )
+                throw new Error(`Ocurrio un error al crear player`);
+
+            res.status(201).json( data );
+
         } catch ( error ) {
             if ( error instanceof Error ){
-                console.error(`create: ${ error.message }`);
+                res.status(400).json({ msg : `${ error.message }`});
             };
         };
     };
@@ -43,7 +56,7 @@ class PlayerController {
 
         } catch ( error ) {
             if ( error instanceof Error ){
-                console.error(`update: ${ error.message }`);
+                res.status(400).json({ msg : `${ error.message }`});
             };
         }
     };
@@ -53,7 +66,7 @@ class PlayerController {
 
         } catch ( error ) {
             if ( error instanceof Error ){
-                console.error(`getUserById: ${ error.message }`);
+                res.status(400).json({ msg : `${ error.message }`});
             };
         };
     };

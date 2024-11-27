@@ -1,6 +1,6 @@
 import cors from 'cors';
 import morgan from 'morgan';
-import express from 'express';
+import express, { Response } from 'express';
 
 import playerRouter from './routes/player-routes';
 import userRouter from './routes/user-routes';

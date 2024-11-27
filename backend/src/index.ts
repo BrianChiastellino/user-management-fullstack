@@ -5,7 +5,6 @@ async function main() {
     try {
         const PORT = process.env.APP_PORT ?? 8081;
 
-        //todo: esperar la conexion con db;
         await AppDataSource.initialize();
         console.info(`Database is running on port ${ process.env.DB_PORT }`);
 
