@@ -15,7 +15,7 @@ app.use( express.json());
 // implementar rutas, controladores, y modelos
 app.use( '/players', playerRouter );
 app.use( '/users', userRouter );
-app.use('/login', authRouter );
+app.use('/auth', authRouter );
 
 
 export default app;
