@@ -1,4 +1,5 @@
 import app from './app';
+
 import { AppDataSource } from './database/data-source';
 
 async function main() {
@@ -21,3 +22,7 @@ async function main() {
 
 main();
 
+//todo: usar google api para mayor precision
+// Latitud: -37.95835 | Longitud: -57.576124 la salle
+// Latitud: -37.925086 | Longitud: -57.53937 tapia
+// resultado en googlemaps 5.5km

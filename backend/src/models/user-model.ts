@@ -29,8 +29,7 @@ export class User extends BaseEntity {
     @UpdateDateColumn()
     updateAt : Date;
 
-    @OneToOne( () => Player )
-    @JoinColumn()
+    @OneToOne( () => Player, player => player.user_id )
     player: Player;
 
 }

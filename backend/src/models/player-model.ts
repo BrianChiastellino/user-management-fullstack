@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, BaseEntity, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, BaseEntity, CreateDateColumn, UpdateDateColumn, JoinColumn } from "typeorm";
 import { User } from "./user-model";
 
 //todo: Agregar calificacion
@@ -35,13 +35,20 @@ export class Player extends BaseEntity {
   @Column({ default: true })
   active: boolean;
 
+  @Column({ type: 'float', nullable: true })
+  lat : number;
+
+  @Column({ type: 'float', nullable: true })
+  long  : number;
+
   @CreateDateColumn()
   createdAt : Date;
 
   @UpdateDateColumn()
   updateAt : Date;
 
-  @OneToOne(() => User, (user) => user.player)
-  user: User; // Relación OneToOne con User
+  @OneToOne(() => User, user => user.player)
+  @JoinColumn({ name : 'user_id'})
+  user_id: number; 
 
 };
