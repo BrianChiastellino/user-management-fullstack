@@ -28,7 +28,7 @@ class PlayerController {
         try {
             const { id } = req.params;
 
-            const data = await Player.findOneBy({ id : Number(id)});
+            const data = await Player.findOneBy({ id });
 
             if ( !data )
                 throw new Error(`Player con id ${ id } no se encuntra en sistema`);
@@ -64,12 +64,12 @@ class PlayerController {
 
             const { id } = req.params;
 
-            const data = await Player.findOneBy({ id : Number(id)});
+            const data = await Player.findOneBy({ id });
 
             if ( !data )
                 throw new Error(`Player con id ${ id } no se encuntra en sistema`);
 
-            const newData = await Player.update({ id : Number(id)}, req.body );
+            const newData = await Player.update({ id }, req.body );
 
             if ( !newData )
                 throw new Error(`Error al actualizar a player`);
@@ -87,12 +87,12 @@ class PlayerController {
         try {
             const { id } = req.params;
 
-            const data = await Player.findOneBy({ id : Number(id)});
+            const data = await Player.findOneBy({ id });
 
             if ( !data )
                 throw new Error(`Player con id ${ id } no se encuntra en sistema`);
 
-            const newData = await Player.delete({ id : Number(id)});
+            const newData = await Player.delete({ id });
 
             if ( !newData )
                 throw new Error(`Error al eliminar a player`);

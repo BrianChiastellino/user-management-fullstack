@@ -1,8 +1,6 @@
 export class JwtPayloadDTO {
-    id  :   string;
-    username    :   string;
-    email       :   string;
-    document    :   string;
+    sub         :   string;
     admin       :   boolean;
-    exp?         :   number; 
+    iat?        :   number;
+    exp?        :   number; 
 };

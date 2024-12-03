@@ -27,7 +27,7 @@ class UserController {
         try {
             const { id } = req.params;
 
-            const data = await User.findOneBy({ id : Number(id)});
+            const data = await User.findOneBy({ id });
 
             if ( !data )
                 throw new Error(`Player con id ${ id } no se encuntra en sistema`);
@@ -63,12 +63,12 @@ class UserController {
 
             const { id } = req.params;
 
-            const data = await User.findOneBy({ id : Number(id)});
+            const data = await User.findOneBy({ id });
 
             if ( !data )
                 throw new Error(`Usuario con id ${ id } no se encuntra en sistema`);
 
-            const newData = await User.update({ id : Number(id)}, req.body );
+            const newData = await User.update({ id }, req.body );
 
             if ( !newData )
                 throw new Error(`Error al actualizar a usuario`);
@@ -86,12 +86,12 @@ class UserController {
         try {
             const { id } = req.params;
 
-            const data = await User.findOneBy({ id : Number(id)});
+            const data = await User.findOneBy({ id });
 
             if ( !data )
                 throw new Error(`Usuario con id ${ id } no se encuntra en sistema`);
 
-            const newData = await User.delete({ id : Number(id)});
+            const newData = await User.delete({ id });
 
             if ( !newData )
                 throw new Error(`Error al eliminar a usuario`);

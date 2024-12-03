@@ -2,9 +2,10 @@ import { Request, Response } from "express";
 
 import authService from "../services/auth-service";
 import { User } from '../models/user-model';
-import { instanceToPlain, plainToInstance } from "class-transformer";
+import { plainToInstance } from "class-transformer";
 import { UserRegisterDTO } from "../dto/user-register.dto";
 import { UserLoginDTO } from "../dto/user-login.dto";
+import { createToken } from "../utils/jwt-utils";
 
 
 
@@ -31,7 +32,10 @@ class AuthController {
             if ( !pw ) 
                 throw new Error(`Contraseña incorrecta`);
     
-            res.status(200).json( user );
+            const token = createToken({
+                sub : user.id,
+                admin : user.admin,
+            });
 
         } catch ( error ) {
             if ( error instanceof Error ) {

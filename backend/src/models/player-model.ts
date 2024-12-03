@@ -1,12 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, BaseEntity, CreateDateColumn, UpdateDateColumn, JoinColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, BaseEntity, CreateDateColumn, UpdateDateColumn, JoinColumn, BeforeInsert } from "typeorm";
 import { User } from "./user-model";
+
+import { v4 as uuidv4 } from 'uuid';
 
 //todo: Agregar calificacion
 
 @Entity('player') 
 export class Player extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ type: 'enum', enum: ['izquierdo', 'derecho', 'ambidiestro'] })
   foot: string;
@@ -46,6 +48,11 @@ export class Player extends BaseEntity {
 
   @UpdateDateColumn()
   updateAt : Date;
+
+  @BeforeInsert()
+  generateUuid() {
+    this.id = uuidv4();
+  }
 
   @OneToOne(() => User, user => user.player)
   @JoinColumn({ name : 'user_id'})

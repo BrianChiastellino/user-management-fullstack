@@ -1,12 +1,14 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import { BaseEntity, BeforeInsert, Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
 import { Player } from './player-model';
+
+import { v4 as uuidv4 } from 'uuid';
 
 
 @Entity('user')
 export class User extends BaseEntity {
 
-    @PrimaryGeneratedColumn()
-    id:   number;
+    @PrimaryGeneratedColumn('uuid')
+    id:   string;
 
     @Column({ type: 'varchar', unique: true, nullable: false })
     username:   string;
@@ -31,6 +33,11 @@ export class User extends BaseEntity {
 
     @UpdateDateColumn()
     updateAt : Date;
+
+    @BeforeInsert()
+    generateUuid () {
+        this.id = uuidv4();
+    };
 
     @OneToOne( () => Player, player => player.user_id )
     player: Player;
