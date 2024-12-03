@@ -23,7 +23,7 @@ export class User extends BaseEntity {
     @Column({ default: true })
     active_account: boolean;
 
-    @Column({ default: false})
+    @Column({ default: false })
     admin: boolean;
 
     @CreateDateColumn()

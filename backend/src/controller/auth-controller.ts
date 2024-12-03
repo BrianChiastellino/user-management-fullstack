@@ -3,8 +3,8 @@ import { Request, Response } from "express";
 import authService from "../services/auth-service";
 import { User } from '../models/user-model';
 import { instanceToPlain, plainToInstance } from "class-transformer";
-import { UserRegisterDTO } from "../dto/userRegister-dto";
-import { UserLoginDTO } from "../dto/userLogin-dto";
+import { UserRegisterDTO } from "../dto/user-register.dto";
+import { UserLoginDTO } from "../dto/user-login.dto";
 
 
 
