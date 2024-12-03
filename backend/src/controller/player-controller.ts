@@ -9,8 +9,10 @@ class PlayerController {
 
     async getAll (req: Request, res : Response ) {
         try {
-
+            const userFromReq = (req as any).user;
             const data = await Player.find();
+
+            console.log({ userFromReq })
             
             if ( !data || data.length === 0) 
                 throw new Error(`No existen jugadores en el sistema`);

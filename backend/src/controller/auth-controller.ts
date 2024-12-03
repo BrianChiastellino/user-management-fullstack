@@ -33,9 +33,11 @@ class AuthController {
                 throw new Error(`Contraseña incorrecta`);
     
             const token = createToken({
-                sub : user.id,
+                subject_id : user.id,
                 admin : user.admin,
             });
+
+            res.status(200).json({ message : 'Login Exitoso', token})
 
         } catch ( error ) {
             if ( error instanceof Error ) {

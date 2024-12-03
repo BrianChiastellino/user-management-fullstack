@@ -1,5 +1,5 @@
 export class JwtPayloadDTO {
-    sub         :   string;
+    subject_id         :   string;
     admin       :   boolean;
     iat?        :   number;
     exp?        :   number; 

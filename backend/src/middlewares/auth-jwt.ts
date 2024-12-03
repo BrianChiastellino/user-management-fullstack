@@ -1,21 +1,29 @@
 import { NextFunction, Request, Response } from "express";
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from "jsonwebtoken";
 
-
-export const authenticateJWT = ( req : Request, res : Response, next : NextFunction  ) => {
+export const authenticateJWT = (req: Request, res: Response, next: NextFunction): void => {
     try {
-        const token = req.header('authorization')?.replace('Bearer', '');
+        // Obtener el token del encabezado Authorization y limpiar el formato
+        const token = req.header("authorization")?.replace('Bearer', '').trim();
 
-        if ( !token )
-            return res.status(403).json({ message : 'Acceso denegado '});
+        // Verificar si no hay token
+        if (!token) {
+            res.status(403).json({ message: "Acceso denegado. Token no proporcionado." });
+            return; // Detener la ejecución del middleware
+        }
 
-        jwt.verify( token, process.env.JWT_SECRET!, ( error, user ) => {
-            if ( error )
-                return res.status(403).json({ message : 'Token invalido' });
-            
-            next();
+        // Verificar el token
+        jwt.verify(token, process.env.JWT_SECRET!, (error, decoded) => {
+            if (error) {
+                res.status(403).json({ message: "Token inválido o expirado." });
+                return; // Detener la ejecución del middleware
+            }
+
+            // Guardar la información decodificada en req.user
+            (req as any).user = decoded as JwtPayload; // Usa un tipo específico si tienes uno
+            next(); // Continuar al siguiente middleware o controlador
         });
-    } catch ( error ) {
-        res.status(500).json({ error : 'Server Error'});
+    } catch (error) {
+        res.status(500).json({ message: "Error de servidor", error: error instanceof Error ? error.message : error });
     }
-}
+};
