@@ -5,6 +5,8 @@ import express from 'express';
 import playerRouter from './routes/player.routes';
 import userRouter from './routes/user.routes';
 import authRouter from './routes/auth.routes'
+import profileRouter from './routes/profile.routes';
+
 import { authenticateJWT } from './middlewares/auth-jwt.midleware';
 import { authRole } from './middlewares/auth-role.middleware ';
 import { UserRole } from './enums/user-role.enum';
@@ -19,13 +21,12 @@ app.use( express.json());
 // implementar rutas, controladores, y modelos
 
 app.use(`${ BASE_URL }/auth` ,authRouter );
-app.use(`${ BASE_URL }/users`, userRouter );
-app.use(`${ BASE_URL }/profile` , authenticateJWT, )
+app.use(`${ BASE_URL }/profile` , authenticateJWT,  profileRouter );
 
 
 
-
-app.use( `${ BASE_URL }/players`, authenticateJWT, authRole( UserRole.ADMIN ), playerRouter );
+// app.use(`${ BASE_URL }/users`, userRouter );
+// app.use( `${ BASE_URL }/players`, authenticateJWT, authRole( UserRole.ADMIN ), playerRouter );
 
 
 

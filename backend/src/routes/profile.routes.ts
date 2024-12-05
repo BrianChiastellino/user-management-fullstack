@@ -1,16 +1,12 @@
 import express from 'express';
-import userController from '../controller/user.controller';
+import profileController from '../controller/profile.controller';
+
 
 const router = express.Router();
 
-router.get('/', userController.getAll );
-
-router.post('/', userController.create );
-
-router.route('/:id')
-.get( userController.getByID )
-.put( userController.update )
-.delete( userController.delete );
+router.get('/settings/account/me', profileController.get )
+router.put('/settings/account/update', profileController.update )
+router.delete('/settings/account/delete', profileController.delete )
 
 
 export default router;
