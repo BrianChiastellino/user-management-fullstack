@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 
-import authService from "../services/auth-service";
-import { User } from '../models/user-model';
+import authService from "../services/auth.service";
+import { User } from '../models/user.model';
 import { plainToInstance } from "class-transformer";
 import { UserRegisterDTO } from "../dto/user-register.dto";
 import { UserLoginDTO } from "../dto/user-login.dto";
-import { createToken } from "../utils/jwt-utils";
+import { createToken } from "../utils/jwt.utils";
 
 
 

@@ -2,10 +2,12 @@ import cors from 'cors';
 import morgan from 'morgan';
 import express from 'express';
 
-import playerRouter from './routes/player-routes';
-import userRouter from './routes/user-routes';
-import authRouter from './routes/auth-routes'
-import { authenticateJWT } from './middlewares/auth-jwt';
+import playerRouter from './routes/player.routes';
+import userRouter from './routes/user.routes';
+import authRouter from './routes/auth.routes'
+import { authenticateJWT } from './middlewares/auth-jwt.midleware';
+import { authRole } from './middlewares/auth-role.middleware ';
+import { UserRole } from './enums/user-role.enum';
 
 const app = express();
 const BASE_URL = process.env.APP_BASE_URL;
@@ -18,7 +20,12 @@ app.use( express.json());
 
 app.use(`${ BASE_URL }/auth` ,authRouter );
 app.use(`${ BASE_URL }/users`, userRouter );
-// app.use( `${ url }/players`, authenticateJWT, playerRouter );
+app.use(`${ BASE_URL }/profile` , authenticateJWT, )
+
+
+
+
+app.use( `${ BASE_URL }/players`, authenticateJWT, authRole( UserRole.ADMIN ), playerRouter );
 
 
 

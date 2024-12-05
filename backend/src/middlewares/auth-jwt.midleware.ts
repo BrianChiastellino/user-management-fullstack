@@ -16,7 +16,8 @@ export const authenticateJWT = (req: Request, res: Response, next: NextFunction)
             return;
         }
 
-        req.jwtPayloadDTO = decoded as JwtPayloadDTO;
+            //todo: Arreglar problema con tipado Request
+            (req as any).jwtPayloadDTO = decoded as JwtPayloadDTO;
         next();
     });
 };

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { Player } from "../models/player-model";
+import { Player } from "../models/player.model";
+import { JwtPayloadDTO } from "../dto/jwt-paylaod.dto";
 
 
 
@@ -9,10 +10,11 @@ class PlayerController {
 
     async getAll (req: Request, res : Response ) {
         try {
-            const userFromReq = (req as any).user;
+            //todo: Arreglar problema con tipado Request
+            const userFromReq : JwtPayloadDTO = (req as any).jwtPayloadDTO;
             const data = await Player.find();
 
-            console.log({ userFromReq })
+            console.log({ userFromReq });
             
             if ( !data || data.length === 0) 
                 throw new Error(`No existen jugadores en el sistema`);

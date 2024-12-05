@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, BaseEntity, CreateDateColumn, UpdateDateColumn, JoinColumn, BeforeInsert } from "typeorm";
-import { User } from "./user-model";
+import { User } from "./user.model";
 
 import { v4 as uuidv4 } from 'uuid';
 import { PositionPlayer } from "../enums/player-position.enum";
