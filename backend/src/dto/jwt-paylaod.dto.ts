@@ -1,6 +1,8 @@
+import { UserRole } from "../enums/user-role.enum";
+
 export class JwtPayloadDTO {
-    subject_id         :   string;
-    admin       :   boolean;
+    subjectId         :   string;
+    role       :   UserRole;
     iat?        :   number;
     exp?        :   number; 
 };

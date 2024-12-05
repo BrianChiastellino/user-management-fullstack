@@ -10,7 +10,7 @@ async function main() {
         console.info(`Database is running on port ${ process.env.DB_PORT }`);
 
         app.listen( PORT, () => {
-            console.log(`App is running on port ${ PORT }`);
+            console.log(`App is running on http://localhost:/${PORT} `);
         });
 
     } catch (error) {

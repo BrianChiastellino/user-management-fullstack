@@ -2,6 +2,8 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToOne, BaseEntity, CreateDat
 import { User } from "./user-model";
 
 import { v4 as uuidv4 } from 'uuid';
+import { PositionPlayer } from "../enums/player-position.enum";
+import { FootPlayer } from "../enums/player-foot.enum";
 
 //todo: Agregar calificacion
 
@@ -10,28 +12,28 @@ export class Player extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'enum', enum: ['izquierdo', 'derecho', 'ambidiestro'] })
+  @Column({ type: 'enum', enum: FootPlayer, nullable: true })
   foot: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: true })
   nationality: string;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'int', nullable: true })
   age: number;
 
-  @Column({ type: 'double' })
+  @Column({ type: 'double', nullable: true })
   height: number;
 
-  @Column({ type: 'double' })
+  @Column({ type: 'double', nullable: true })
   weight: number;
 
-  @Column({ type: 'enum', enum: ['defensor', 'mediocampista', 'delantero', 'arquero'] })
+  @Column({ type: 'enum', enum: PositionPlayer })
   position: string;
 
-  @Column({ type: 'int', default: 0 })
+  @Column({ type: 'int', default: 0, nullable: true })
   matches:  number
 
-  @Column({ type: 'int', default: 0 })
+  @Column({ type: 'int', default: 0, nullable: true })
   goals: number;
 
   @Column({ default: true })

@@ -2,6 +2,7 @@ import { BaseEntity, BeforeInsert, Column, CreateDateColumn, Entity, JoinColumn,
 import { Player } from './player-model';
 
 import { v4 as uuidv4 } from 'uuid';
+import { UserRole } from "../enums/user-role.enum";
 
 
 @Entity('user')
@@ -25,8 +26,8 @@ export class User extends BaseEntity {
     @Column({ default: true })
     active_account: boolean;
 
-    @Column({ default: false })
-    admin: boolean;
+    @Column({ type : 'enum', enum: UserRole, default: UserRole.USER, nullable: false })
+    role: UserRole;
 
     @CreateDateColumn()
     createdAt : Date;
