@@ -17,8 +17,6 @@ class AuthController {
         try {
             const userLoginDTO = plainToInstance( UserLoginDTO, req.body );
 
-            console.log({ userLoginDTO });
-
             if ( !userLoginDTO )
                 throw new Error(`Usuario y contraseña requeridos`);
 
@@ -27,9 +25,9 @@ class AuthController {
             if ( !user  )
                 throw new Error(`Usuario no encontrado`);
 
-            const pw = authService.compareEncryptPassword( userLoginDTO.password , user!.password);
+            const password = authService.compareEncryptPassword( userLoginDTO.password , user!.password);
 
-            if ( !pw ) 
+            if ( !password ) 
                 throw new Error(`Contraseña incorrecta`);
     
             const token = createToken({
@@ -37,7 +35,9 @@ class AuthController {
                 role : user.role,
             });
 
-            res.status(200).json({ message : 'Login Exitoso', token })
+            res.cookie('token', token);
+
+            res.status(200).json({ message : 'Login Exitoso', token });
 
         } catch ( error ) {
             if ( error instanceof Error ) {

@@ -35,11 +35,11 @@ export class LoginPageComponent {
     const identificador = this.loginForm.controls['identificador'].value;
     const password = this.loginForm.controls['password'].value;
 
-    this.authService.login( identificador, password ).subscribe( jwtToken => {
-      if ( !jwtToken )
+    this.authService.login( identificador, password ).subscribe( token => {
+      if ( !token )
         return console.error('Error al obtener token');
 
-      console.log({ jwtToken });
+      console.log({ jwtToken: token });
       this.router.navigateByUrl('profile/me');
 
     });

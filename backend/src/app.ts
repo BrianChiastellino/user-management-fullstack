@@ -10,13 +10,17 @@ import profileRouter from './routes/profile.routes';
 import { authenticateJWT } from './middlewares/auth-jwt.midleware';
 import { authRole } from './middlewares/auth-role.middleware ';
 import { UserRole } from './enums/user-role.enum';
+import cookieParser from 'cookie-parser';
+import { JwtPayloadDTO } from './dto/jwt-paylaod.dto';
+
 
 const app = express();
 const BASE_URL = process.env.APP_BASE_URL;
 
 app.use( cors());
-app.use( morgan('dev'));
-app.use( express.json());
+app.use( morgan('dev') );
+app.use( express.json() );
+app.use ( cookieParser() );
 
 // implementar rutas, controladores, y modelos
 

@@ -1,6 +1,7 @@
 import { UserRole } from "../enums/user-role.enum";
+import { JwtPayload } from 'jsonwebtoken';
 
-export class JwtPayloadDTO {
+export class JwtPayloadDTO implements JwtPayload {
     subjectId         :   string;
     role       :   UserRole;
     iat?        :   number;
