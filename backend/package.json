@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --env-file=.env src/index.ts",
+    "dev": "ts-node-dev --respawn --env-file=.env --files src/index.ts",
     "build": "tsc",
     "start": "node --env-file=.env build/index.js"
   },

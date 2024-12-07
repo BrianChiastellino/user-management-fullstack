@@ -1,30 +1,28 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response, Request } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { JwtPayloadDTO } from "../dto/jwt-paylaod.dto";
 
 
 
 
-export const authenticateJWT = (req: Request, res: Response, next: NextFunction) : void => {
+export const authenticateJWT = (req: Request , res: Response, next: NextFunction) : void => {
     // const token = req.header("authorization")?.replace('Bearer', '').trim();
-    const token = req.cookies.token;
+    const token : string = req.cookies.token;
 
     if ( !token ) {
         res.status(403).json({ message: "Acceso denegado. No se encuentra el token" });
         return;
     }
 
-    jwt.verify(token, process.env.JWT_SECRET!, (error : jwt.VerifyErrors | null , decoded : JwtPayload | undefined | string ) => {
-        if (error || typeof decoded !== "object" || !decoded) {
+    jwt.verify(token, process.env.JWT_SECRET!, (error, decoded ) => {
+        if (error || !decoded) {
             res.status(403).json({ message: "Token inválido o expirado." });
             return;
         }
 
-        console.log({ decoded });
-
-        req.jwtoken = decoded;
-
-            //todo: Arreglar problema con tipado Request
-            
+        const token : JwtPayloadDTO = (decoded) as JwtPayloadDTO;
+        req.payload = token;
+        
         next();
     });
 };
