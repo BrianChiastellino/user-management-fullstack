@@ -10,6 +10,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.css']
 })
+
 export class LoginPageComponent {
 
   public loginForm : FormGroup = this.fb.group({
@@ -20,21 +21,27 @@ export class LoginPageComponent {
   constructor (
     private authService : AuthService,
     private fb : FormBuilder,
+    private router: Router,
   ) {};
 
   public submitForm() {
     if ( !this.loginForm.valid)
-      return;
+      return console.error('Error en formulario login');
 
     this.login();
   }
 
   private login () {
-    const email = this.loginForm.controls['email'].value;
+    const identificador = this.loginForm.controls['identificador'].value;
     const password = this.loginForm.controls['password'].value;
 
-    this.authService.login( email, password ).subscribe( jwtToken => {
+    this.authService.login( identificador, password ).subscribe( jwtToken => {
+      if ( !jwtToken )
+        return console.error('Error al obtener token');
+
       console.log({ jwtToken });
+      this.router.navigateByUrl('profile/me');
+
     });
 
 

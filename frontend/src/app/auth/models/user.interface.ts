@@ -1,11 +1,11 @@
 export interface IUser {
-  id: string;
+  id?: string;
   username: string;
   email: string;
   password: string;
   document: string;
-  active_account: boolean;
-  role: 'admin' | 'user';  // Usa los roles según tu enum UserRole
-  createdAt: Date;
-  updatedAt: Date;
+  active_account?: boolean;
+  role?: "admin" | "user";
+  createdAt?: Date;
+  updatedAt?: Date;
 }
