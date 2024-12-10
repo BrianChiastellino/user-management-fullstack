@@ -1,0 +1,51 @@
+<div class="form-container">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <!-- Username -->
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input id="username" type="text" formControlName="username" class="form-control" />
+    </div>
+
+    <!-- Email -->
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email" class="form-control" />
+    </div>
+
+    <!-- Document -->
+    <div class="form-group">
+      <label for="document">Document</label>
+      <input id="document" type="text" formControlName="document" class="form-control" />
+    </div>
+
+    <!-- Role -->
+    <div class="form-group">
+      <label for="role">Role</label>
+      <input id="role" type="text" formControlName="role" class="form-control" readonly />
+    </div>
+
+    <!-- Active Account -->
+    <div class="form-group">
+      <label for="active_account">Active Account</label>
+      <input id="active_account" type="checkbox" formControlName="active_account" />
+    </div>
+
+    <!-- Created At (Readonly) -->
+    <div class="form-group">
+      <label for="createdAt">Created At</label>
+      <input id="createdAt" type="text" formControlName="createdAt" class="form-control" readonly />
+    </div>
+
+    <!-- Updated At (Readonly) -->
+    <div class="form-group">
+      <label for="updateAt">Updated At</label>
+      <input id="updateAt" type="text" formControlName="updateAt" class="form-control" readonly />
+    </div>
+
+    <!-- Buttons -->
+    <div class="form-buttons">
+      <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Update</button>
+      <button type="button" class="btn btn-danger" (click)="onDelete()">Delete Account</button>
+    </div>
+  </form>
+</div>

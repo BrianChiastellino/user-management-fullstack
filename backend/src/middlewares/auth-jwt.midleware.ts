@@ -20,6 +20,7 @@ export const authenticateJWT = (req: Request , res: Response, next: NextFunction
             return;
         }
 
+        // Guardamos el token en el req para manipularlo con otros controladores
         const token : JwtPayloadDTO = ( decoded ) as JwtPayloadDTO;
         req.payload = token;
         

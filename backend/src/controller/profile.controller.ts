@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { JwtPayloadDTO } from "../dto/jwt-paylaod.dto";
 import { User } from "../models/user.model";
 import profileService from "../services/profile.service";
 
@@ -13,7 +12,7 @@ class ProfileController {
             if ( !user || !id )
                 throw new Error(`Usuario con id ${ id } no encontrado`);
 
-            res.status(200).json({ msg : 'Get', user });
+            res.status(200).json( user );
         } catch ( error ) {
             if ( error instanceof Error ){
                 res.status(400).json({ msg : `${ error.message }`});
@@ -21,15 +20,15 @@ class ProfileController {
         }
     };
 
-    update ( req : Request, res : Response ) {
+    async update ( req : Request, res : Response ) {
         try {
             const id = req.payload?.subjectId;
-            const updateResult = profileService.update(id! , req.body);
+            const updateResult = await profileService.update(id! , req.body);
 
             if ( !id || !updateResult ) 
-                return new Error(`Usuario con id ${ id } no existe`);
+                throw new Error(`Usuario con id ${ id } no existe`);
 
-            res.status(200).json({ msg : 'Update', updateResult });
+            res.status(200).json( updateResult );
 
         } catch ( error ) {
             if ( error instanceof Error ) {
@@ -39,15 +38,15 @@ class ProfileController {
 
     };
 
-    delete ( req : Request, res : Response ) {
+    async delete ( req : Request, res : Response ) {
         try {
             const id = req.payload?.subjectId;
-            const deleteResult = profileService.delete( id! );
+            const deleteResult = await profileService.delete( id! );
     
             if ( !id || !deleteResult )
-                return new Error(`Usuario con id ${ id } no existe`);
+                throw new Error(`Usuario con id ${ id } no existe`);
     
-            res.status(200).json({ msg : 'Delete', deleteResult });
+            res.status(200).json( deleteResult );
             
         } catch ( error ) {
             if ( error instanceof Error ) {
