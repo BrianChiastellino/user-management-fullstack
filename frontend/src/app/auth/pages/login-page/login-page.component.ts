@@ -40,7 +40,7 @@ export class LoginPageComponent {
         return console.error('Error al obtener token');
 
       console.log({ jwtToken: token });
-      this.router.navigateByUrl('profile/me');
+      this.router.navigateByUrl('main');
 
     });
 

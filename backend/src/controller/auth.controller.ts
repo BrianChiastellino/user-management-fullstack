@@ -30,12 +30,18 @@ class AuthController {
             if ( !password ) 
                 throw new Error(`Contraseña incorrecta`);
     
+            // Creamos el jwt
             const token = createToken({
                 subjectId : user.id,
                 role : user.role,
             });
 
-            res.cookie('token', token);
+            // Mandamos el jwt mediante cookies
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure: false,
+                sameSite: 'lax',
+            });
 
             res.status(200).json({ message : 'Login Exitoso', token });
 

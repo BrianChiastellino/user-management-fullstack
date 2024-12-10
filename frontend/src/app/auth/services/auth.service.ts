@@ -20,15 +20,15 @@ export class AuthService {
 
     const body = { identificador: username, password }
 
-    return this.http.post<JwtPayload | null>(`${environment.BASE_URL_BACKEND}/auth/login`, body )
+    return this.http.post<JwtPayload | null>(`${environment.BASE_URL_BACKEND}/auth/login`, body, { withCredentials: true } )
   };
 
   public register ( user : User ) : Observable<User | null> {
     if ( !user )
       return of (null);
 
-    return this.http.post<User>(`${ environment.BASE_URL_BACKEND}/auth/register`, user )
-  }
+    return this.http.post<User>(`${ environment.BASE_URL_BACKEND}/auth/register`, user);
+  };
 
 
 }
