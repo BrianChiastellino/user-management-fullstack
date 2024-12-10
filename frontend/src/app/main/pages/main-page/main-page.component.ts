@@ -20,8 +20,8 @@ export class MainPageComponent {
     this.getProfile();
   }
 
-  public getProfile () : void {
-    this.profileService.getProfile('05bbbfaf-3839-4941-b79f-4192c0e29f4e').subscribe( user => {
+  public getProfile(): void {
+    this.profileService.getProfile().subscribe(user => {
       console.log({ user });
     });
   };

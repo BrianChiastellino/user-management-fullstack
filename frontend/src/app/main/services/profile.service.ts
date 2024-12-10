@@ -13,10 +13,8 @@ export class ProfileService {
     private http: HttpClient,
   ) { }
 
-  public getProfile ( id : string ) : Observable<User | null> {
-    if ( !id )
-      return of(null)
-
+  public getProfile () : Observable<User | null> {
+    //Habilitamos credentials para enviar las cookies
     return this.http.get<User>(`${ environment.BASE_URL_BACKEND }/profile/settings/account/me`, { withCredentials : true })
 
   }
