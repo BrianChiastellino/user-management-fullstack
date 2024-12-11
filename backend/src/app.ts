@@ -12,6 +12,7 @@ import { authRole } from './middlewares/auth-role.middleware ';
 import { UserRole } from './enums/user-role.enum';
 import cookieParser from 'cookie-parser';
 import { JwtPayloadDTO } from './dto/jwt-paylaod.dto';
+import { errorHandler } from './middlewares/error-handler.midleware';
 
 
 const app = express();
@@ -30,6 +31,8 @@ app.use ( cookieParser() );
 
 app.use(`${ BASE_URL }/auth` ,authRouter );
 app.use(`${ BASE_URL }/profile` , authenticateJWT,  profileRouter );
+
+app.use( errorHandler );
 
 
 

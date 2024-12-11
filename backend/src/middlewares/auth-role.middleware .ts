@@ -3,6 +3,7 @@
 import { NextFunction, Request, Response } from "express"
 import { UserRole } from "../enums/user-role.enum";
 import { JwtPayloadDTO } from "../dto/jwt-paylaod.dto";
+import { UnauthorizedError } from "../errors/unauthorized.error";
 
 
 export const authRole = (...userRoles: UserRole[]) => {
@@ -12,13 +13,8 @@ export const authRole = (...userRoles: UserRole[]) => {
       const jwtPayloadDTO : JwtPayloadDTO = (req as any).jwtPayloadDTO;
   
       if (!jwtPayloadDTO || !userRoles.includes(jwtPayloadDTO.role)) {
-        res.status(403).json({ 
-            message : 'Acceso denegado',
-            required_roles   :   `${ userRoles }`,
-            currentRole : jwtPayloadDTO.role
-         });
-        return;
-      }
+        throw new UnauthorizedError('Acceso denegado');
+      };
   
       next();
     };

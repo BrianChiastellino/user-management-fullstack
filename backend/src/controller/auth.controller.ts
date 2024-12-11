@@ -1,11 +1,12 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
 import authService from "../services/auth.service";
 import { User } from '../models/user.model';
-import { plainToInstance } from "class-transformer";
-import { UserRegisterDTO } from "../dto/user-register.dto";
-import { UserLoginDTO } from "../dto/user-login.dto";
-import { createToken } from "../utils/jwt.utils";
+
+import jwt from 'jsonwebtoken';
+import { JwtPayloadDTO } from "../dto/jwt-paylaod.dto";
+import { UnauthorizedError } from "../errors/unauthorized.error";
+import { BadRequestError } from "../errors/bad-request.error";
 
 
 
@@ -13,72 +14,72 @@ class AuthController {
 
     constructor () {}
 
-    public async login ( req : Request, res : Response) {
+    public async login ( req : Request, res : Response, next : NextFunction ) {
         try {
-            const userBody : User = User.create( req.body );
+            const userFromBody : User = User.create( req.body );
+            // console.log({ userFromBody });
 
-            if ( !userBody )
-                throw new Error(`Usuario y contraseña requeridos`);
+            if ( !userFromBody )
+                throw new BadRequestError('Solicitud erronea');
 
-            const user = await authService.get( userBody.username );
-            
-            if ( !user  )
-                throw new Error(`Usuario no encontrado`);
+            const user = await authService.get( userFromBody.username );
+            // console.log({ user });
 
-
-            const password = authService.compareEncryptPassword( userBody.password , user!.password);
-
-            if ( !password ) 
-                throw new Error(`Contraseña incorrecta`);
+            if ( !user || !authService.compareEncryptPassword( userFromBody.password , user!.password) ){
+                throw new UnauthorizedError('Credenciales incorrectas')
+            }
 
             // Creamos el jwt
-            const token = createToken({
-                subjectId : user.id,
-                role : user.role,
+            const token : string = this.createToken({
+                subjectId: user!.id,
+                role: user!.role
             });
+            // console.log({ token })
 
-            // Mandamos el jwt mediante cookies
-            res.cookie('token', token, {
-                httpOnly: true,
-                secure: false,
-                sameSite: 'lax',
-            });
+            // Mandamos el token a las cookies
+            this.sendCookie('token', token, res );
 
             res.status(200).json({ message : 'Login Exitoso', token });
 
         } catch ( error ) {
-            if ( error instanceof Error ) {
-                res.status(400).json({ error : error.message });
-            } else {
-                res.status(500).json({ error : 'Error de servidor'})
-            }
+            next( error )
         }
     };
 
-    public register = async  ( req : Request, res : Response ) => {
+    public register = async  ( req : Request, res : Response, next: NextFunction ) => {
         try {
             const userFromBody : User = User.create({
                 ...req.body,
                 password: authService.encryptPassword( req.body.password ),
             });
+            // console.log({ userFromBody });
 
-            const existe = authService.get( userFromBody.username );
+            const userExist : User | null = await authService.get( userFromBody.username );
+            console.log({ userExist });
 
-            if ( !existe )
-                throw new Error(`El usuario ya esta registrado en el sistema`);
+            if ( userExist )
+                throw new BadRequestError( 'El usuario ya está registrado' );
         
-            const user = await authService.create( userFromBody );
+            const user : User = await authService.create( userFromBody );
 
             res.status(201).json( user );
 
         } catch ( error ) {
-            if ( error instanceof Error ) {
-                res.status(400).json({ error : error.message });
-            } else {
-                res.status(500).json({ error : 'Error de servidor'})
-            }
-        }
+            next( error );
+        };
     }
+
+    private createToken ( payload : JwtPayloadDTO ) : string {
+        return jwt.sign( payload , process.env.JWT_SECRET! , { expiresIn: process.env.JWT_EXPIRES_IN });
+    }
+
+    private sendCookie ( name : string, value : string , res : Response ) : void {
+        res.cookie( name, value, {
+            httpOnly: true,
+            secure: false,
+            sameSite: 'lax'
+        });
+    };
 
 
 
