@@ -15,21 +15,22 @@ class AuthController {
 
     public async login ( req : Request, res : Response) {
         try {
-            const userLoginDTO = plainToInstance( UserLoginDTO, req.body );
+            const userBody : User = User.create( req.body );
 
-            if ( !userLoginDTO )
+            if ( !userBody )
                 throw new Error(`Usuario y contraseña requeridos`);
 
-            const user = await authService.get( userLoginDTO.username );
-    
+            const user = await authService.get( userBody.username );
+            
             if ( !user  )
                 throw new Error(`Usuario no encontrado`);
 
-            const password = authService.compareEncryptPassword( userLoginDTO.password , user!.password);
+
+            const password = authService.compareEncryptPassword( userBody.password , user!.password);
 
             if ( !password ) 
                 throw new Error(`Contraseña incorrecta`);
-    
+
             // Creamos el jwt
             const token = createToken({
                 subjectId : user.id,
@@ -56,21 +57,19 @@ class AuthController {
 
     public register = async  ( req : Request, res : Response ) => {
         try {
-            const registerDTO = plainToInstance( UserRegisterDTO, req.body );
+            const userFromBody : User = User.create({
+                ...req.body,
+                password: authService.encryptPassword( req.body.password ),
+            });
 
-            const existe = authService.get( registerDTO.username );
+            const existe = authService.get( userFromBody.username );
 
             if ( !existe )
                 throw new Error(`El usuario ya esta registrado en el sistema`);
-
-            const user : User = User.create({
-                ...registerDTO,
-                password : authService.encryptPassword( registerDTO.password )
-            });
         
-            const dbUser = await authService.create( user );
+            const user = await authService.create( userFromBody );
 
-            res.status(201).json( dbUser );
+            res.status(201).json( user );
 
         } catch ( error ) {
             if ( error instanceof Error ) {

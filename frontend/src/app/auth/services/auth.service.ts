@@ -18,7 +18,7 @@ export class AuthService {
     if ( !username || !password)
       return of(null);
 
-    const body = { identificador: username, password }
+    const body = { username, password }
 
     return this.http.post<JwtPayload | null>(`${environment.BASE_URL_BACKEND}/auth/login`, body, { withCredentials: true } )
   };

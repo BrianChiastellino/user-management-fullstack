@@ -7,7 +7,9 @@ import { JwtPayloadDTO } from "../dto/jwt-paylaod.dto";
 
 export const authenticateJWT = (req: Request , res: Response, next: NextFunction) : void => {
     // Capturamos la cookie
-    const token : string = req.cookies.token || req.header("authorization")?.replace('Bearer', '').trim();
+    const token : string = req.cookies.token;
+
+    console.log('token cooke :', token)
 
     if ( !token ) {
         res.status(403).json({ message: "Acceso denegado. No se encuentra el token" });
