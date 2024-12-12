@@ -1,25 +1,23 @@
 import { NextFunction, Response, Request } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { JwtPayloadDTO } from "../dto/jwt-paylaod.dto";
+import { UnauthorizedError } from "../errors/unauthorized.error";
 
 
 
 
 export const authenticateJWT = (req: Request , res: Response, next: NextFunction) : void => {
+    try {
     // Capturamos la cookie
     const token : string = req.cookies.token;
 
-    console.log('token cooke :', token)
-
     if ( !token ) {
-        res.status(403).json({ message: "Acceso denegado. No se encuentra el token" });
-        return;
+        throw new UnauthorizedError('Error al obtener token');
     }
 
     jwt.verify(token, process.env.JWT_SECRET!, (error, decoded ) => {
         if ( error || !decoded ) {
-            res.status(403).json({ message: "Token inválido o expirado." });
-            return;
+            throw new UnauthorizedError('Token invalido o expirado');
         }
 
         // Guardamos el token en el req para manipularlo con otros controladores
@@ -28,4 +26,8 @@ export const authenticateJWT = (req: Request , res: Response, next: NextFunction
         
         next();
     });
+    } catch ( error ) {
+        next( error )
+    }
+
 };

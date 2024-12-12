@@ -14,7 +14,7 @@ class AuthController {
 
     constructor () {}
 
-    public async login ( req : Request, res : Response, next : NextFunction ) {
+    public login = async ( req : Request, res : Response, next : NextFunction ) => {
         try {
             const userFromBody : User = User.create( req.body );
             // console.log({ userFromBody });
@@ -34,7 +34,6 @@ class AuthController {
                 subjectId: user!.id,
                 role: user!.role
             });
-            // console.log({ token })
 
             // Mandamos el token a las cookies
             this.sendCookie('token', token, res );
@@ -45,6 +44,11 @@ class AuthController {
             next( error )
         }
     };
+
+    private createToken = ( payload : JwtPayloadDTO ) : string => {
+        return jwt.sign( payload , process.env.JWT_SECRET! , { expiresIn: process.env.JWT_EXPIRES_IN });
+    }
+
 
     public register = async  ( req : Request, res : Response, next: NextFunction ) => {
         try {
@@ -69,17 +73,27 @@ class AuthController {
         };
     }
 
-    private createToken ( payload : JwtPayloadDTO ) : string {
-        return jwt.sign( payload , process.env.JWT_SECRET! , { expiresIn: process.env.JWT_EXPIRES_IN });
-    }
+    // private createToken ( payload : JwtPayloadDTO ) : string {
+    //     return jwt.sign( payload , process.env.JWT_SECRET! , { expiresIn: process.env.JWT_EXPIRES_IN });
+    // }
 
-    private sendCookie ( name : string, value : string , res : Response ) : void {
+   
+    private sendCookie = ( name : string, value : string, res : Response ) : void => {
+        console.log('Entrando kukardas')
         res.cookie( name, value, {
             httpOnly: true,
             secure: false,
-            sameSite: 'lax'
+            sameSite: 'lax',
         });
-    };
+    } 
+
+    // private sendCookie ( name : string, value : string , res : Response ) : void {
+    //     res.cookie( name, value, {
+    //         httpOnly: true,
+    //         secure: false,
+    //         sameSite: 'lax'
+    //     });
+    // };
 
 
 
