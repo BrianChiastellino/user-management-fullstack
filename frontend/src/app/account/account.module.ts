@@ -7,6 +7,7 @@ import { AccountUpdatePageComponent } from './pages/account-update-page/account-
 import { AccountDeletePageComponent } from './pages/account-delete-page/account-delete-page.component';
 import { AccountMePageComponent } from './pages/account-me-page/account-me-page.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     AccountRoutingModule,
     ReactiveFormsModule,
+    SharedModule,
   ]
 })
 export class AccountModule { }

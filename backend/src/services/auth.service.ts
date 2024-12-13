@@ -4,6 +4,9 @@ import { User } from '../models/user.model';
 
 class AuthService {
 
+ 
+    
+
 //todo: agregar documento
     public async get ( identifier : string ) : Promise<User | null> {
         return await User.findOne({ where: [ { username : identifier }, { email: identifier}  ]});
@@ -20,6 +23,12 @@ class AuthService {
     async delete ( id : string ) : Promise<any> {
 
     }
+
+    public async hasAnyUsers(): Promise<boolean> {
+        const userCount = await User.count();
+        return userCount > 0;
+    }
+
     public encryptPassword ( password : string ) : string {
         return bcrypt.hashSync( password, 10);
     }

@@ -32,7 +32,6 @@ export class AccountFormComponent implements OnInit {
 
   public getAccount () : void {
     this.accountService.getAccount().subscribe( user => {
-      console.log({ user });
       if ( !user )
         return console.error({ user });
 

@@ -12,12 +12,12 @@ export const authenticateJWT = (req: Request , res: Response, next: NextFunction
     const token : string = req.cookies.token;
 
     if ( !token ) {
-        throw new UnauthorizedError('Error al obtener token');
+        throw new UnauthorizedError('Cookie not exists');
     }
 
     jwt.verify(token, process.env.JWT_SECRET!, (error, decoded ) => {
         if ( error || !decoded ) {
-            throw new UnauthorizedError('Token invalido o expirado');
+            throw new UnauthorizedError('Invalid or expired token ');
         }
 
         // Guardamos el token en el req para manipularlo con otros controladores
