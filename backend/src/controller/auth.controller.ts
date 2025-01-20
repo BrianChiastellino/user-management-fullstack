@@ -94,11 +94,6 @@ class AuthController {
             next( error );
         };
     };
-
-    // private createToken ( payload : JwtPayloadDTO ) : string {
-    //     return jwt.sign( payload , process.env.JWT_SECRET! , { expiresIn: process.env.JWT_EXPIRES_IN });
-    // }
-
    
     private sendCookie = ( name : string, value : string, res : Response ) : void => {
         console.log('Entrando kukardas')
@@ -116,17 +111,6 @@ class AuthController {
             sameSite: 'lax',
         });
     };
-
-    // private sendCookie ( name : string, value : string , res : Response ) : void {
-    //     res.cookie( name, value, {
-    //         httpOnly: true,
-    //         secure: false,
-    //         sameSite: 'lax'
-    //     });
-    // };
-
-
-
  }
 
 export default new AuthController();

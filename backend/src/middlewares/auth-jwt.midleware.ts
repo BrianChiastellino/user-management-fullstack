@@ -10,7 +10,7 @@ export const authenticateJWT = (req: Request , res: Response, next: NextFunction
     try {
     // Capturamos la cookie
     const token : string = req.cookies.token;
-    console.log({ token });
+    console.log({ tokenUsuario : token})
 
     if ( !token ) {
         throw new UnauthorizedError('Cookie not exists');

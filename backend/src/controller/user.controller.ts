@@ -58,29 +58,28 @@ class UserController {
         };
     };
 
-    async update ( req : Request, res : Response ) {
+    async update(req: Request, res: Response) {
         try {
-
             const { id } = req.params;
-
+    
             const data = await User.findOneBy({ id });
-
-            if ( !data )
-                throw new Error(`Usuario con id ${ id } no se encuntra en sistema`);
-
-            const newData = await User.update({ id }, req.body );
-
-            if ( !newData )
-                throw new Error(`Error al actualizar a usuario`);
-
-            res.status(200).json( newData );
-
-        } catch ( error ) {
-            if ( error instanceof Error ){
-                res.status(400).json({ msg : `${ error.message }`});
-            };
+    
+            if (!data) throw new Error(`Usuario con id ${id} no se encuentra en el sistema`);
+    
+            await User.update({ id }, req.body);
+    
+            const updatedUser = await User.findOneBy({ id }); // Obtén el usuario actualizado
+    
+            if (!updatedUser) throw new Error(`Error al actualizar el usuario`);
+    
+            res.status(200).json( updatedUser ); // Retorna el usuario actualizado
+        } catch (error) {
+            if (error instanceof Error) {
+                res.status(400).json({ msg: `${error.message}` });
+            }
         }
-    };
+    }
+    
 
     async delete ( req : Request, res : Response ) {
         try {
@@ -96,11 +95,11 @@ class UserController {
             if ( !newData )
                 throw new Error(`Error al eliminar a usuario`);
 
-            res.status(200).json({ msg : `Usuario eliminado!`});
+            res.status(200).json(true);
 
         } catch ( error ) {
             if ( error instanceof Error ){
-                res.status(400).json({ msg : `${ error.message }`});
+                res.status(400).json(false);
             };
         };
     };

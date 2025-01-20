@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AccountService } from '../../services/account.service';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/auth/services/auth.service';
+import { switchMap, tap } from 'rxjs';
+import { User } from 'src/app/auth/models/user.model';
 
 @Component({
   selector: 'app-account-form',
@@ -24,6 +27,7 @@ export class AccountFormComponent implements OnInit {
   constructor (
     private fb: FormBuilder,
     private accountService : AccountService,
+    private authService : AuthService,
     private router : Router,
   ) {}
 
@@ -46,16 +50,25 @@ export class AccountFormComponent implements OnInit {
     }
   }
 
-  public onDelete (): void {
-    this.accountService.deleteAcount().subscribe( () => {
-      this.router.navigateByUrl('auth/login');
+  /// SwitchMap espera a que se ejecute el deleteAccout y despues sigue con el logout
+  public onDelete(): void {
+    this.accountService.deleteAccount().pipe(
+        tap( wasDeletedUser => console.log({ wasDeletedUser })),
+        switchMap(() => this.authService.logout())
+    ).subscribe(() => {
+        this.router.navigateByUrl('auth/login');
     });
-  };
+}
 
-  public onuUpdate () : void {
-    this.accountService.updateAcount().subscribe( data => {
-      console.log({ data });
-    });
+
+  public onUpdate () : void {
+    if ( this.form.valid) {
+      const updatedUser : User = this.form.value;
+      console.log(`Usuario actualizado: ${ updatedUser }`);
+      this.accountService.updateAcount( updatedUser ).subscribe( data => {
+        console.log({ data });
+      });
+    }
   };
 
 }
