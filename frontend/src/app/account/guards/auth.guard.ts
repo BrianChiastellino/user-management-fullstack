@@ -33,16 +33,3 @@ export class AuthGuard {
 
 
 }
-
-// map( auth => { if (auth) {
-//   return true;
-// } else {
-//   this.router.navigate(['/login']);
-//   return false;
-// }
-// }),
-// catchError(() => {
-// this.router.navigate(['/login']);
-// return of(false);
-// })
-

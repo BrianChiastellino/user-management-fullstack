@@ -55,6 +55,14 @@ class ProfileController {
         }
     };
 
+    private clearCookie = ( name : string, res : Response ) : void => {
+        res.clearCookie( name, {
+            httpOnly: true,
+            secure: false,
+            sameSite: 'lax',
+        });
+    };
+
 }
 
 

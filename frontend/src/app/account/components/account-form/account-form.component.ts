@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AccountService } from '../../services/account.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-account-form',
@@ -9,22 +10,22 @@ import { AccountService } from '../../services/account.service';
 })
 export class AccountFormComponent implements OnInit {
 
-  public form : FormGroup;
+  public form : FormGroup = this.fb.group({
+    id: [{ value: '', disabled: true }], // Campo readonly
+    username: ['', [Validators.required]],
+    email: ['', [Validators.required, Validators.email]],
+    document: ['', [Validators.required]],
+    role: [{ value: '', disabled: true }], // Campo readonly
+    active_account: [false],
+    createdAt: [{ value: '', disabled: true }], // Campo readonly
+    updateAt: [{ value: '', disabled: true }], // Campo readonly
+  }) ;
 
   constructor (
     private fb: FormBuilder,
     private accountService : AccountService,
-  ) {
-    this.form = this.fb.group({
-      username: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      document: ['', [Validators.required]],
-      role: [{ value: '', disabled: true }], // Campo readonly
-      active_account: [false],
-      createdAt: [{ value: '', disabled: true }], // Campo readonly
-      updateAt: [{ value: '', disabled: true }], // Campo readonly
-    });
-  }
+    private router : Router,
+  ) {}
 
   ngOnInit(): void {
     this.getAccount();
@@ -39,14 +40,22 @@ export class AccountFormComponent implements OnInit {
       });
   }
 
-  public onSubmit(): void {
+  public onSubmit (): void {
     if (this.form.valid) {
       console.log('Form data:', this.form.getRawValue());
     }
   }
 
-  public onDelete(): void {
-    console.log('Account deletion requested');
-  }
+  public onDelete (): void {
+    this.accountService.deleteAcount().subscribe( () => {
+      this.router.navigateByUrl('auth/login');
+    });
+  };
+
+  public onuUpdate () : void {
+    this.accountService.updateAcount().subscribe( data => {
+      console.log({ data });
+    });
+  };
 
 }

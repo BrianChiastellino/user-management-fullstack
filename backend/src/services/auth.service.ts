@@ -4,9 +4,6 @@ import { User } from '../models/user.model';
 
 class AuthService {
 
- 
-    
-
 //todo: agregar documento
     public async get ( identifier : string ) : Promise<User | null> {
         return await User.findOne({ where: [ { username : identifier }, { email: identifier}  ]});

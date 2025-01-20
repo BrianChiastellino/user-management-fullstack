@@ -18,12 +18,12 @@ export class AccountService {
     return this.http.get<User>(`${ environment.BASE_URL_BACKEND }/profile/settings/account/me`, { withCredentials : true })
   }
 
-  public updateAcount () : void {
-
+  public updateAcount () : Observable<any> {
+    return this.http.put<any>(`${ environment.BASE_URL_BACKEND }/profile/settings/account/update`, { withCredentials : true })
   };
 
-  public deleteAcount () : void {
-
+  public deleteAcount () : Observable<any> {
+    return this.http.delete<any>(`${ environment.BASE_URL_BACKEND }/profile/settings/account/delete`, { withCredentials : true })
   }
 }
 
