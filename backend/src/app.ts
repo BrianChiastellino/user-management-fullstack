@@ -1,18 +1,20 @@
 import cors from 'cors';
 import morgan from 'morgan';
 import express from 'express';
+import cookieParser from 'cookie-parser';
 
-import playerRouter from './routes/player.routes';
-import userRouter from './routes/user.routes';
+// middlewares
+import { authenticateJWT } from './middlewares/auth-jwt.midleware';
+import { errorHandler } from './middlewares/error-handler.midleware';
+import { authRole } from './middlewares/auth-role.middleware ';
+
+// routes
 import authRouter from './routes/auth.routes'
 import profileRouter from './routes/profile.routes';
+import adminRouter from './routes/admin.routes';
 
-import { authenticateJWT } from './middlewares/auth-jwt.midleware';
-import { authRole } from './middlewares/auth-role.middleware ';
+// enums
 import { UserRole } from './enums/user-role.enum';
-import cookieParser from 'cookie-parser';
-import { JwtPayloadDTO } from './dto/jwt-paylaod.dto';
-import { errorHandler } from './middlewares/error-handler.midleware';
 
 
 const app = express();
@@ -29,22 +31,13 @@ app.use( express.json() );
 app.use ( cookieParser() );
 
 
-
 app.use(`${ BASE_URL }/auth` ,authRouter );
 app.use(`${ BASE_URL }/profile` , authenticateJWT,  profileRouter );
+app.use(`${ BASE_URL }/admin` , authenticateJWT, authRole( UserRole.ADMIN), adminRouter );
+
+
 
 app.use( errorHandler );
-
-
-
-// app.use(`${ BASE_URL }/users`, userRouter );
-// app.use( `${ BASE_URL }/players`, authenticateJWT, authRole( UserRole.ADMIN ), playerRouter );
-
-
-
-
-
-
 
 
 export default app;

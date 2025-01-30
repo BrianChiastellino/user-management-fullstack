@@ -7,8 +7,10 @@ class ProfileController {
 
     async get  ( req : Request, res : Response, next : NextFunction ) {
         try{
-            const id = req.payload?.subjectId;
+            const { id } = req.params;
+            
             const user = await profileService.get( id! );
+            console.log({ userToGet : user });
     
             if ( !user || !id )
                 throw new BadRequestError(`Usuario con id ${ id } no encontrado`);
@@ -21,14 +23,16 @@ class ProfileController {
 
     async update ( req : Request, res : Response, next : NextFunction ) {
         try {
-            const id = req.payload?.subjectId;
+            const { id } = req.params;
 
-            const user = await profileService.get( id! );
+            const user = await profileService.get( id );
+            console.log({ userToUpdate : user })
 
             if( !user ) 
                 throw new BadRequestError(`Usuario con id ${ id } no encontrado`);
 
-            await profileService.update( id!, req.body)
+            const data = await profileService.update( id!, req.body)
+            console.log({ dataUpdated : data })
 
             const updatedUser = await profileService.get( id! );
 
@@ -42,9 +46,10 @@ class ProfileController {
 
     async delete ( req : Request, res : Response, next : NextFunction ) {
         try {
-            const id = req.payload?.subjectId;
+            const { id } = req.params;
 
-            const user = await profileService.get( id! );
+            const user = await profileService.get( id );
+            console.log({ userToDelete : user });
 
             if( !user ) 
                 throw new BadRequestError(`Usuario con id ${ id } no encontrado`);

@@ -1,5 +1,4 @@
 import { BaseEntity, BeforeInsert, Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
-import { Player } from './player.model';
 
 import { v4 as uuidv4 } from 'uuid';
 import { UserRole } from "../enums/user-role.enum";
@@ -40,7 +39,5 @@ export class User extends BaseEntity {
         this.id = uuidv4();
     };
 
-    @OneToOne( () => Player, player => player.user_id )
-    player: Player;
 
 }

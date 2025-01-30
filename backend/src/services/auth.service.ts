@@ -6,7 +6,7 @@ class AuthService {
 
 //todo: agregar documento
     public async get ( identifier : string ) : Promise<User | null> {
-        return await User.findOne({ where: [ { username : identifier }, { email: identifier}  ]});
+        return await User.findOne({ where: [ { username : identifier }, { email: identifier}, { document : identifier }]});
     };
 
     async create ( user : User ) : Promise<User> {

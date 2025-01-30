@@ -9,8 +9,9 @@ import { UnauthorizedError } from "../errors/unauthorized.error";
 export const authRole = (...userRoles: UserRole[]) => {
     return (req: Request, res: Response, next: NextFunction) => {
   
-      //todo: Arreglar request
-      const jwtPayloadDTO : JwtPayloadDTO = req.payload! ;
+      const jwtPayloadDTO : JwtPayloadDTO = req.payload!;
+
+      console.log({ jwtFromReq : jwtPayloadDTO })
   
       if (!jwtPayloadDTO || !userRoles.includes(jwtPayloadDTO.role)) {
         throw new UnauthorizedError('Acceso denegado');

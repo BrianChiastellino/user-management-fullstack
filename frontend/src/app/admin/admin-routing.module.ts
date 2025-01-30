@@ -1,18 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MainPageComponent } from './pages/main-page/main-page.component';
+import { UsersFormsPageComponent } from './pages/users-forms-page/users-forms-page.component';
 
 const routes: Routes = [
   {
     path: '',
     children: [
-      {
-        path: 'account/me', component: MainPageComponent,
-      },
-      {
-        path: '**',
-        redirectTo: 'account/me',
-      }
+      { path : 'users', component: UsersFormsPageComponent },
+      { path: '**', redirectTo: 'users'},
     ]
   }
 ];
@@ -21,4 +16,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class MainRoutingModule { }
+export class AdminRoutingModule { }

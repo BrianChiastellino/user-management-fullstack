@@ -39,7 +39,7 @@ class AuthController {
             // Mandamos el token a las cookies
             this.sendCookie('token', token, res );
 
-            res.status(200).json( token );
+            res.status(200).json( user );
 
         } catch ( error ) {
             next( error )

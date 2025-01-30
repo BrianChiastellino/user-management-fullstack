@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { IUser } from '../../models/user.interface';
 import { User } from '../../models/user.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { pipe, tap } from 'rxjs';
 
 @Component({
   selector: 'app-login-page',
@@ -31,18 +32,23 @@ export class LoginPageComponent {
     this.login();
   }
 
-  private login () {
+  private login() {
     const identificador = this.loginForm.controls['identificador'].value;
     const password = this.loginForm.controls['password'].value;
 
-    this.authService.login( identificador, password ).subscribe( token => {
-      if ( !token )
-        return console.error('Error al obtener token');
+    this.authService.login(identificador, password)
+      .pipe(tap(user => console.log('Usuario logueado :', user)),)
+      .subscribe(user => {
+        if (!user)
+          return console.error('Error al obtener token');
 
-      console.log({ jwtToken: token });
-      this.router.navigateByUrl('account');
+        console.log({ userLogin: user });
 
-    });
+        this.router.navigateByUrl('/account');
+
+
+
+      });
 
 
   }

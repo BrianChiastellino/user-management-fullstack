@@ -5,6 +5,10 @@ import { DeleteResult, UpdateResult } from "typeorm";
 
 class ProfileService {
 
+    async getAll ( ) : Promise<User[] | null > {
+        return await User.find();
+    }
+
     async get ( id : string ) : Promise<User | null> {
         return await User.findOneBy({ id });
     };

@@ -1,5 +1,4 @@
 import { DataSource  } from 'typeorm';
-import { Player } from '../models/player.model';
 import { User } from '../models/user.model';
 
 
@@ -15,7 +14,7 @@ export const AppDataSource = new DataSource({
     database:   process.env.DB_DATABASE,
     synchronize:    true,
     logging:    true,
-    entities:   [Player, User],
+    entities:   [User],
     subscribers:    [],
 
 });
