@@ -13,14 +13,9 @@ export class AuthService {
   private userSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null); // Almacena al usuario
   public user$: Observable<User | null> = this.userSubject.asObservable(); // Observable público para acceder a los datos del usuario
 
-
-
   constructor(
     private http : HttpClient,
-  ) {
-    this.checkAdmin();
-    this.checkAuth();
-  }
+  ) {}
 
 
   public login(username: string, password: string): Observable<User | null> {
@@ -46,18 +41,16 @@ export class AuthService {
     return this.http.post<User>(`${environment.BASE_URL_BACKEND}/auth/register`, user);
   };
 
-  public checkAuth() : Observable<boolean> {
-    console.log( this.userSubject.getValue() );
-    return of(this.userSubject.getValue() !== null);
-  }
-
   public checkAdmin () : boolean  {
     return this.userSubject.getValue()?.role === 'admin' ? true : false;
   }
 
 
-  public logout(): void {
-
+  public logout(): Observable<null> {
+    return this.http.post<null>(`${ environment.BASE_URL_BACKEND}/auth/logout`, {}, { withCredentials: true })
+    .pipe(
+      tap( () => this.userSubject.next(null)),
+    )
   }
 
 

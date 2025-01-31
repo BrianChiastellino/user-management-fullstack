@@ -42,12 +42,16 @@ export class LoginPageComponent {
         if (!user)
           return console.error('Error al obtener token');
 
-        console.log({ userLogin: user });
+        switch ( user.role ) {
+          case 'admin': this.router.navigateByUrl('/admin');
+          break;
 
-        this.router.navigateByUrl('/account');
+          case 'user': this.router.navigateByUrl('/account');
+          break;
 
-
-
+          default: this.router.navigateByUrl('/auth');
+          break;
+        }
       });
 
 

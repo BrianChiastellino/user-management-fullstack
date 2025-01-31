@@ -12,7 +12,9 @@ export class NavbarPageComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   public onLogout(): void {
-    this.authService.logout();
+    this.authService.logout().subscribe( () => {
+      this.router.navigateByUrl('/auth');
+    });
   };
 
 }

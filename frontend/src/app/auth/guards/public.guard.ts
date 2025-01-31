@@ -11,19 +11,18 @@ export class PublicGuard{
 
   constructor( private authService: AuthService, private router: Router) {}
 
-  private checkAuthentication(): void{
-    this.authService.user$.pipe(
-      tap(user => console.log({ userFromAccount: user })),  // Verificar valor antes de suscribirse
-    ).subscribe(user => {
-      console.log({ data: user });  // Aquí obtenemos el valor del usuario
-    });
+  private checkAuthentication(): Observable<boolean>{
+    return this.authService.user$.pipe(
+      map( user => !user ),
+      tap( isPublic => {
+        if ( !isPublic )
+            this.router.navigateByUrl('/account');
+      }),
+    );
+  };
 
-  }
-
-
-
-  // public canActivate: CanActivateFn = (route, state) => {
-  //   return this.checkAuthentication();
-  // };
+  public canActivate: CanActivateFn = (route, state) => {
+    return this.checkAuthentication();
+  };
 
   }
