@@ -47,7 +47,6 @@ export class UserFormPageComponent implements OnChanges {
     this.form.patchValue( this.user! );
   }
 
-  //todo: termianr delete y updated
   public onDelete(): void {
     if ( !this.form.valid )
       return console.error('Formulario inválido:', this.form.value);
@@ -60,34 +59,40 @@ export class UserFormPageComponent implements OnChanges {
     if ( !id )
       return console.error('Error: El ID es undefined', this.form.value);
 
-    //switchMap	Cancela la petición anterior si llega una nueva. Solo ejecuta la última.
-    //concatMap	Espera a que termine la actual antes de ejecutar la siguiente.
 
-    if ( role !== 'admin') {
-      this.accountService.deleteAccount(id).pipe(
-        switchMap(() => this.authService.user$.pipe(
-          first(),
-          switchMap(user => (user?.id === id ? this.authService.logout() : of(null))),
+
+    if (role !== 'admin') {                               // 🔹 Solo permite eliminar usuarios que NO sean administradores
+      this.accountService.deleteAccount(id).pipe(         // 🛑 1. Elimina el usuario en la API
+        switchMap(() => this.authService.user$.pipe(      // 🔁 3. Obtiene el usuario actual
+          first(),                                        // 🔹 Solo toma el primer valor (evita múltiples ejecuciones)
+
+          tap( user => {
+            console.log( user!.id, id)
+            if ( user!.id == id )                         // 🔥 4. Si el usuario eliminado es el actual, lo desloguea
+              this.authService.logout().subscribe( () => this.router.navigateByUrl('/auth/login'));                                                          // 🔄 5. Redirige al login si el usuario eliminado era el actual
+          })
         ))
-      ).subscribe(() => {
-        this.router.navigateByUrl('/auth/login');
-      });
+      ).subscribe(() => this.adminService.deleteUser( id ));
     } else {
-      alert('No se pueden eliminar adminstradores');
+      alert('No se pueden eliminar administradores');
     };
+
   };
 
 
+  //todo: Terminar el updated
   public onUpdate () : void {
-    if ( this.form.valid) {
-      const updatedUser : User = this.form.value;
+    if ( !this.form.valid )
+      return console.error('Formulario inválido:', this.form.value);
 
-      console.log({ updatedUser });
+    const id = this.form.controls['id'].value;
+    const user : User = this.form.value;
 
-      this.accountService.updateAcount( updatedUser ).subscribe( data => {
-        console.log({ data });
-      });
-    }
+    console.log({ id, user });
+
+    this.accountService.updateAcount(user, id)
+    .subscribe( userUpdate => console.log({userUpdate}))
+
   };
 
 }

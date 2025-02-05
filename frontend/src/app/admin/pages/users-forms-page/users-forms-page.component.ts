@@ -16,9 +16,7 @@ export class UsersFormsPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.adminService.getUsers().subscribe( users => {
-      console.log({ adminUsers : users });
-      this.allUsers = users;
-    })
+    this.adminService.getUsers();
+    this.adminService.users$.subscribe(users => this.allUsers = users);
   }
 }
