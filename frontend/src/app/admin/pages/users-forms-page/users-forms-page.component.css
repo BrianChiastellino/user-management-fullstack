@@ -1,0 +1,21 @@
+/* Contenedor principal para todos los formularios */
+.form-container {
+  display: flex;
+  flex-wrap: wrap; /* Los formularios se ajustan a nuevas filas si no hay espacio */
+  gap: 16px; /* Espaciado uniforme entre formularios */
+  justify-content: flex-start; /* Alineación inicial (puedes cambiar a 'center' o 'space-around') */
+  padding: 16px;
+  background-color: #f9f9f9; /* Fondo opcional */
+}
+
+/* Estilo para cada formulario */
+app-user-form-page {
+  flex: 1 1 calc(33.33% - 16px); /* Ocupa un tercio del contenedor, ajustado por el gap */
+  max-width: 50vh; /* Ancho máximo */
+  min-width: 300px; /* Ancho mínimo para diseño responsivo */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra opcional */
+  border: 1px solid #ddd; /* Borde opcional */
+  border-radius: 8px;
+  padding: 16px; /* Espaciado interno */
+  background-color: #fff; /* Fondo blanco */
+}

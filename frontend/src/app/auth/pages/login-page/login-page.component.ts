@@ -37,7 +37,10 @@ export class LoginPageComponent {
     const password = this.loginForm.controls['password'].value;
 
     this.authService.login(identificador, password)
-      .pipe(tap(user => console.log('Usuario logueado :', user)),)
+      .pipe(
+        tap(user => console.log('Usuario logueado :', user)),
+        tap( () => alert('Cuenta logueada con éxito!')),
+    )
       .subscribe(user => {
         if (!user)
           return console.error('Error al obtener token');

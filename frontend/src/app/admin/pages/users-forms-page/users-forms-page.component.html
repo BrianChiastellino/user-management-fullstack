@@ -1,3 +1,7 @@
-<div *ngFor="let user of allUsers">
-  <app-user-form-page [isAdmin]="true" [user]="user"></app-user-form-page>
+<div class="form-container">
+    <app-user-form-page
+    *ngFor="let user of allUsers"
+    [isAdmin]="true"
+    [user]="user">
+  </app-user-form-page>
 </div>

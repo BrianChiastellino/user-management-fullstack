@@ -43,7 +43,7 @@ export class RegisterPageComponent {
     this.authService.register( user ).subscribe( dbUser => {
       console.log({ dbUser });
 
-
+      alert('Cuenta registrada con éxito!')
       this.router.navigateByUrl('auth/login');
     })
   }

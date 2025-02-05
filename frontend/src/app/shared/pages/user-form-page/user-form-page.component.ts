@@ -71,7 +71,8 @@ export class UserFormPageComponent implements OnChanges {
             if ( user!.id == id )                         // 🔥 4. Si el usuario eliminado es el actual, lo desloguea
               this.authService.logout().subscribe( () => this.router.navigateByUrl('/auth/login'));                                                          // 🔄 5. Redirige al login si el usuario eliminado era el actual
           })
-        ))
+        )),
+        tap( () => alert('Cuenta eliminada con exito!')),
       ).subscribe(() => this.adminService.deleteUser( id ));
     } else {
       alert('No se pueden eliminar administradores');
@@ -91,6 +92,9 @@ export class UserFormPageComponent implements OnChanges {
     console.log({ id, user });
 
     this.accountService.updateAcount(user, id)
+    .pipe(
+      tap( () => alert('Cuenta actualizada con éxito')),
+    )
     .subscribe( userUpdate => console.log({userUpdate}))
 
   };
